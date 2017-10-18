@@ -36,8 +36,8 @@ namespace Reversi {
 
         private void pnl_Game_MouseClick(object sender, MouseEventArgs e) {
             int clicked_i, clicked_j;
-            clicked_i = e.Y / revBoard.squareSize;
-            clicked_j = e.X / revBoard.squareSize;
+            clicked_i = e.X / revBoard.squareSize;
+            clicked_j = e.Y / revBoard.squareSize;
 
             revBoard.arrSquares[clicked_i, clicked_j].PieceColor = revBoard.playerAtTurn.PlayerColor;
             Invalidate();
