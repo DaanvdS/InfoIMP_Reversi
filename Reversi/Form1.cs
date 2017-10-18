@@ -26,6 +26,7 @@ namespace Reversi {
                 //goedzo
             } else {
                 //mag niet
+                //Daan
             }
             //Console.Beep();
         }
