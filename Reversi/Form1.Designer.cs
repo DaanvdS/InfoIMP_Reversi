@@ -54,6 +54,7 @@
             this.pnl_Game.Size = new System.Drawing.Size(800, 800);
             this.pnl_Game.TabIndex = 2;
             this.pnl_Game.Paint += new System.Windows.Forms.PaintEventHandler(this.drawBoard);
+            this.pnl_Game.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pnl_Game_MouseClick);
             // 
             // frm_Reversi
             // 
