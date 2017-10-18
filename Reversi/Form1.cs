@@ -15,6 +15,7 @@ using System.Windows.Forms;
 namespace Reversi {
     public partial class frm_Reversi : Form {
         private Board revBoard;
+        private Player player1, player2;
         public frm_Reversi() {
             int Rows = 6;
             int Columns = 6;
