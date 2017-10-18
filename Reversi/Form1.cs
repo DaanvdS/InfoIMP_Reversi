@@ -13,25 +13,17 @@ using System.Windows.Forms;
 // Als je code wilt verwijderen/aanpassen kan je het dan in een comment zetten? dan kunnen we makkelijker in één bestand werken
 
 namespace Reversi {
-        //En nu weer terug?
     public partial class frm_Reversi : Form {
         private Board revBoard;
         public frm_Reversi() {
-            int Rows = 6;
-            int Columns = 6;
-
             InitializeComponent();
-            revBoard = new Board(Rows, Columns, this);
-            
-            revBoard.arrPlayers[0] = new Player(Color.Blue);
-            revBoard.arrPlayers[1] = new Player(Color.Red);
-
-            if (revBoard.IsRowsEven) {
-                //goedzo
+            if ((nud_Rows.Value % 2 == 0) && (nud_Columns.Value % 2 == 0)) {
+                revBoard = new Board((int)nud_Rows.Value, (int)nud_Rows.Value, this);
+                revBoard.arrPlayers[0] = new Player(Color.Blue);
+                revBoard.arrPlayers[1] = new Player(Color.Red);
             } else {
-                //mag niet
+                MessageBox.Show("Hey, ho, be careful, the rows and columns in the board should be even!", "Wow wow wow hey!");
             }
-            //Console.Beep();
         }
 
         private void pnl_Game_MouseClick(object sender, MouseEventArgs e) {
@@ -81,7 +73,15 @@ namespace Reversi {
             g.FillEllipse(b, revBoard.squareSize * i + offsetX, revBoard.squareSize * j + offsetY, revBoard.squareSize, revBoard.squareSize);
         }
 
- 
+        private void btn_NieuwSpel_Click(object sender, EventArgs e) {
+            if ((nud_Rows.Value % 2 == 0) && (nud_Columns.Value % 2 == 0)) {
+                revBoard = new Board((int)nud_Rows.Value, (int)nud_Rows.Value, this);
+                revBoard.arrPlayers[0] = new Player(Color.Blue);
+                revBoard.arrPlayers[1] = new Player(Color.Red);
+            } else {
+                MessageBox.Show("Hey, ho, be careful, the rows and columns in the board should be even!", "Wow wow wow hey!");
+            }
+        }
     }
 
     public class Board {
