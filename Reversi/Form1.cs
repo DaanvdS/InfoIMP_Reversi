@@ -13,14 +13,18 @@ using System.Windows.Forms;
 // Als je code wilt verwijderen/aanpassen kan je het dan in een comment zetten? dan kunnen we makkelijker in één bestand werken
 
 namespace Reversi {
+        //En nu weer terug?
     public partial class frm_Reversi : Form {
         private Board revBoard;
         public frm_Reversi() {
             InitializeComponent();
-            if ((nud_Rows.Value % 2 == 0) && (nud_Columns.Value % 2 == 0)) {
-                revBoard = new Board((int)nud_Rows.Value, (int)nud_Rows.Value, this);
-                revBoard.arrPlayers[0] = new Player(Color.Blue);
-                revBoard.arrPlayers[1] = new Player(Color.Red);
+            revBoard = new Board(Rows, Columns, this);
+            
+            revBoard.arrPlayers[0] = new Player(Color.Blue);
+            revBoard.arrPlayers[1] = new Player(Color.Red);
+
+            if (revBoard.IsRowsEven) {
+                //goedzo
             } else {
                 MessageBox.Show("Hey, ho, be careful, the rows and columns in the board should be even!", "Wow wow wow hey!");
             }
@@ -31,7 +35,8 @@ namespace Reversi {
             clicked_i = e.Y / revBoard.squareSize;
             clicked_j = e.X / revBoard.squareSize;
 
-            revBoard.arrSquares[clicked_i, clicked_j].PieceColor = Color.Blue;
+            revBoard.arrSquares[clicked_i, clicked_j].PieceColor = revBoard.playerAtTurn.PlayerColor;
+            Invalidate();
         }
 
         public void drawBoard(object sender, PaintEventArgs e) {
@@ -87,7 +92,7 @@ namespace Reversi {
     public class Board {
         private frm_Reversi parent_Form;
         public int rows, columns;               //these variables are set by constructor
-        public int whoseturn;                   // player 1 =>1 etc
+        public Player playerAtTurn;
         public int[] boardSize = new int[] { 0, 0 };
         public int squareSize = 100;
         public int borderWidth = 4;

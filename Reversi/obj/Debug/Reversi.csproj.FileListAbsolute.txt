@@ -25,13 +25,13 @@ D:\Joost_2\Tu Delft\3e jaar (17-18)\Minor\Imperatief programmeren\Imp\Projecten\
 D:\Joost_2\Tu Delft\3e jaar (17-18)\Minor\Imperatief programmeren\Imp\Projecten\ReversiGIT\Reversi\obj\Debug\Reversi.csproj.CoreCompileInputs.cache
 D:\Joost_2\Tu Delft\3e jaar (17-18)\Minor\Imperatief programmeren\Imp\Projecten\ReversiGIT\Reversi\obj\Debug\Reversi.exe
 D:\Joost_2\Tu Delft\3e jaar (17-18)\Minor\Imperatief programmeren\Imp\Projecten\ReversiGIT\Reversi\obj\Debug\Reversi.pdb
-D:\Documents\UU\INFOIMP\GitHub\InfoIMP_Reversi\Reversi\bin\Debug\Reversi.exe.config
-D:\Documents\UU\INFOIMP\GitHub\InfoIMP_Reversi\Reversi\bin\Debug\Reversi.exe
-D:\Documents\UU\INFOIMP\GitHub\InfoIMP_Reversi\Reversi\bin\Debug\Reversi.pdb
-D:\Documents\UU\INFOIMP\GitHub\InfoIMP_Reversi\Reversi\obj\Debug\Reversi.csprojResolveAssemblyReference.cache
-D:\Documents\UU\INFOIMP\GitHub\InfoIMP_Reversi\Reversi\obj\Debug\Reversi.frm_Reversi.resources
-D:\Documents\UU\INFOIMP\GitHub\InfoIMP_Reversi\Reversi\obj\Debug\Reversi.Properties.Resources.resources
-D:\Documents\UU\INFOIMP\GitHub\InfoIMP_Reversi\Reversi\obj\Debug\Reversi.csproj.GenerateResource.Cache
-D:\Documents\UU\INFOIMP\GitHub\InfoIMP_Reversi\Reversi\obj\Debug\Reversi.csproj.CoreCompileInputs.cache
-D:\Documents\UU\INFOIMP\GitHub\InfoIMP_Reversi\Reversi\obj\Debug\Reversi.exe
-D:\Documents\UU\INFOIMP\GitHub\InfoIMP_Reversi\Reversi\obj\Debug\Reversi.pdb
+D:\Joost_2\Tu Delft\3e jaar (17-18)\Minor\Imperatief programmeren\Imp\Projecten\ReversiGIT2\Reversi\bin\Debug\Reversi.exe.config
+D:\Joost_2\Tu Delft\3e jaar (17-18)\Minor\Imperatief programmeren\Imp\Projecten\ReversiGIT2\Reversi\bin\Debug\Reversi.exe
+D:\Joost_2\Tu Delft\3e jaar (17-18)\Minor\Imperatief programmeren\Imp\Projecten\ReversiGIT2\Reversi\bin\Debug\Reversi.pdb
+D:\Joost_2\Tu Delft\3e jaar (17-18)\Minor\Imperatief programmeren\Imp\Projecten\ReversiGIT2\Reversi\obj\Debug\Reversi.csprojResolveAssemblyReference.cache
+D:\Joost_2\Tu Delft\3e jaar (17-18)\Minor\Imperatief programmeren\Imp\Projecten\ReversiGIT2\Reversi\obj\Debug\Reversi.frm_Reversi.resources
+D:\Joost_2\Tu Delft\3e jaar (17-18)\Minor\Imperatief programmeren\Imp\Projecten\ReversiGIT2\Reversi\obj\Debug\Reversi.Properties.Resources.resources
+D:\Joost_2\Tu Delft\3e jaar (17-18)\Minor\Imperatief programmeren\Imp\Projecten\ReversiGIT2\Reversi\obj\Debug\Reversi.csproj.GenerateResource.Cache
+D:\Joost_2\Tu Delft\3e jaar (17-18)\Minor\Imperatief programmeren\Imp\Projecten\ReversiGIT2\Reversi\obj\Debug\Reversi.csproj.CoreCompileInputs.cache
+D:\Joost_2\Tu Delft\3e jaar (17-18)\Minor\Imperatief programmeren\Imp\Projecten\ReversiGIT2\Reversi\obj\Debug\Reversi.exe
+D:\Joost_2\Tu Delft\3e jaar (17-18)\Minor\Imperatief programmeren\Imp\Projecten\ReversiGIT2\Reversi\obj\Debug\Reversi.pdb
