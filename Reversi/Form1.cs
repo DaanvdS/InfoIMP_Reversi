@@ -15,13 +15,16 @@ using System.Windows.Forms;
 namespace Reversi {
     public partial class frm_Reversi : Form {
         private Board revBoard;
-        private Player player1, player2;
         public frm_Reversi() {
             int Rows = 6;
             int Columns = 6;
 
             InitializeComponent();
             revBoard = new Board(Rows, Columns, this);
+            
+            revBoard.arrPlayers[0] = new Player(Color.Blue);
+            revBoard.arrPlayers[1] = new Player(Color.Red);
+
             if (revBoard.IsRowsEven) {
                 //goedzo
             } else {
@@ -36,17 +39,6 @@ namespace Reversi {
             clicked_j = e.X / revBoard.squareSize;
 
             revBoard.arrSquares[clicked_i, clicked_j].PieceColor = Color.Blue;
-        }
-
-        public void clickedSquare(int mouseX, int mouseY) {          //this method is called if a click happens
-
-            int clicked_i, clicked_j;
-            bool validClick;
-            //mouseX should be 0 at the left most edge of the board and y 0 at top edge
-            //add statements here to check if the mouseX and Y where inside the board edges
-
-            clicked_i = mouseY / squareSize;
-            clicked_j = mouseX / squareSize;
         }
 
         public void drawBoard(object sender, PaintEventArgs e) {
@@ -103,7 +95,7 @@ namespace Reversi {
 
         public bool IsRowsEven;         //these variables are created in instance of class            
         public Square[,] arrSquares;
-
+        public Player[] arrPlayers = new Player[2];
 
         public Board(int t_rows, int t_columns, frm_Reversi t_Form) {
             this.parent_Form = t_Form;
