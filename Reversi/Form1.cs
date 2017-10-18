@@ -29,6 +29,24 @@ namespace Reversi {
             //Console.Beep();
         }
 
+        private void pnl_Game_MouseClick(object sender, MouseEventArgs e) {
+            int clicked_i, clicked_j;
+            clicked_i = e.Y / revBoard.squareSize;
+            clicked_j = e.X / revBoard.squareSize;
+
+            revBoard.arrSquares[clicked_i, clicked_j].PieceColor = Color.Blue;
+        }
+
+        public void clickedSquare(int mouseX, int mouseY) {          //this method is called if a click happens
+
+            int clicked_i, clicked_j;
+            bool validClick;
+            //mouseX should be 0 at the left most edge of the board and y 0 at top edge
+            //add statements here to check if the mouseX and Y where inside the board edges
+
+            clicked_i = mouseY / squareSize;
+            clicked_j = mouseX / squareSize;
+        }
 
         public void drawBoard(object sender, PaintEventArgs e) {
             //teken bord iets met een forloop en drawSquares
@@ -68,6 +86,8 @@ namespace Reversi {
             int offsetY = (j + 1) * revBoard.borderWidth - 1;
             g.FillEllipse(b, revBoard.squareSize * i + offsetX, revBoard.squareSize * j + offsetY, revBoard.squareSize, revBoard.squareSize);
         }
+
+ 
     }
 
     public class Board {
@@ -107,19 +127,6 @@ namespace Reversi {
             arrSquares[(rows / 2), (columns / 2) - 1] = new Square(true, Color.Red, false);
             arrSquares[(rows / 2), (columns / 2)] = new Square(true, Color.Blue, false);
         }
-
-        void clickedSquare(int mouseX, int mouseY) {          //this method is called if a click happens
-
-            int clicked_i, clicked_j;
-            bool validClick;
-            //mouseX should be 0 at the left most edge of the board and y 0 at top edge
-            //add statements here to check if the mouseX and Y where inside the board edges
-
-            clicked_i = mouseY / squareSize;
-            clicked_j = mouseX / squareSize;
-        }
-
-
     }
 
     public class Square {
