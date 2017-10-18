@@ -11,7 +11,6 @@ using System.Windows.Forms;
 // Heb voornamelijk alleen nog de structuur van classes aangelegd
 // belangrijkste methodes die nog moeten: het tekenen, het handelen van mouseclick events, 
 // Als je code wilt verwijderen/aanpassen kan je het dan in een comment zetten? dan kunnen we makkelijker in één bestand werken
-//test
 
 namespace Reversi {
     public partial class frm_Reversi : Form {
