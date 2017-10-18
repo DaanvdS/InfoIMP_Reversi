@@ -26,7 +26,6 @@ namespace Reversi {
                 //goedzo
             } else {
                 //mag niet
-                //Daan
             }
             //Console.Beep();
         }
@@ -75,6 +74,7 @@ namespace Reversi {
     public class Board {
         private frm_Reversi parent_Form;
         public int rows, columns;               //these variables are set by constructor
+        public int whoseturn;                   // player 1 =>1 etc
         public int[] boardSize = new int[] { 0, 0 };
         public int squareSize = 100;
         public int borderWidth = 4;
@@ -108,6 +108,19 @@ namespace Reversi {
             arrSquares[(rows / 2), (columns / 2) - 1] = new Square(true, Color.Red, false);
             arrSquares[(rows / 2), (columns / 2)] = new Square(true, Color.Blue, false);
         }
+
+        void clickedSquare(int mouseX, int mouseY) {          //this method is called if a click happens
+
+            int clicked_i, clicked_j;
+            bool validClick;
+            //mouseX should be 0 at the left most edge of the board and y 0 at top edge
+            //add statements here to check if the mouseX and Y where inside the board edges
+
+            clicked_i = mouseY / squareSize;
+            clicked_j = mouseX / squareSize;
+        }
+
+
     }
 
     public class Square {
