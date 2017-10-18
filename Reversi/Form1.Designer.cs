@@ -26,6 +26,7 @@
             this.btn_NieuwSpel = new System.Windows.Forms.Button();
             this.btn_Help = new System.Windows.Forms.Button();
             this.pnl_Game = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btn_NieuwSpel
@@ -56,11 +57,21 @@
             this.pnl_Game.Paint += new System.Windows.Forms.PaintEventHandler(this.drawBoard);
             this.pnl_Game.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pnl_Game_MouseClick);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(467, 13);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // frm_Reversi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(827, 858);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.pnl_Game);
             this.Controls.Add(this.btn_Help);
             this.Controls.Add(this.btn_NieuwSpel);
@@ -75,6 +86,7 @@
         private System.Windows.Forms.Button btn_NieuwSpel;
         private System.Windows.Forms.Button btn_Help;
         private System.Windows.Forms.Panel pnl_Game;
+        private System.Windows.Forms.Button button1;
     }
 }
 
