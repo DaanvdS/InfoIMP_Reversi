@@ -13,6 +13,7 @@ using System.Windows.Forms;
 // Als je code wilt verwijderen/aanpassen kan je het dan in een comment zetten? dan kunnen we makkelijker in één bestand werken
 
 namespace Reversi {
+    //test
     public partial class frm_Reversi : Form {
         private Board revBoard;
         public frm_Reversi() {
