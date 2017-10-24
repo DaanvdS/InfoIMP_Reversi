@@ -18,10 +18,12 @@ namespace Reversi {
         private Board revBoard;
         public frm_Reversi() {
             InitializeComponent();
+            int Rows = 6;               //values in design??!?
+            int Columns = 6;
+
             revBoard = new Board(Rows, Columns, this);
             
-            revBoard.arrPlayers[0] = new Player(Color.Blue);
-            revBoard.arrPlayers[1] = new Player(Color.Red);
+
 
             if (revBoard.IsRowsEven) {
                 //goedzo
@@ -32,6 +34,7 @@ namespace Reversi {
 
         private void pnl_Game_MouseClick(object sender, MouseEventArgs e) {
             int clicked_i, clicked_j;
+
             clicked_i = e.X / revBoard.squareSize;
             clicked_j = e.Y / revBoard.squareSize;
 
@@ -78,21 +81,22 @@ namespace Reversi {
             g.FillEllipse(b, revBoard.squareSize * i + offsetX, revBoard.squareSize * j + offsetY, revBoard.squareSize, revBoard.squareSize);
         }
 
-        private void btn_NieuwSpel_Click(object sender, EventArgs e) {
-            if ((nud_Rows.Value % 2 == 0) && (nud_Columns.Value % 2 == 0)) {
-                revBoard = new Board((int)nud_Rows.Value, (int)nud_Rows.Value, this);
-                revBoard.arrPlayers[0] = new Player(Color.Blue);
-                revBoard.arrPlayers[1] = new Player(Color.Red);
-            } else {
-                MessageBox.Show("Hey, ho, be careful, the rows and columns in the board should be even!", "Wow wow wow hey!");
-            }
-        }
+        //private void btn_nieuwspel_click(object sender, eventargs e) {                                                //wtf is dit
+        //    if ((nud_rows.value % 2 == 0) && (nud_columns.value % 2 == 0)) {
+        //        revboard = new board((int)nud_rows.value, (int)nud_rows.value, this);
+        //        revboard.arrplayers[0] = new player(color.blue);
+        //        revboard.arrplayers[1] = new player(color.red);
+        //    }
+        //    else {
+        //        messagebox.show("hey, ho, be careful, the rows and columns in the board should be even!", "wow wow wow hey!");
+        //    }
+        //}
     }
 
     public class Board {
         private frm_Reversi parent_Form;
         public int rows, columns;               //these variables are set by constructor
-        public Player playerAtTurn;
+        public Player playerAtTurn;             //should contain player
         public int[] boardSize = new int[] { 0, 0 };
         public int squareSize = 100;
         public int borderWidth = 4;
@@ -103,12 +107,16 @@ namespace Reversi {
         public Square[,] arrSquares;
         public Player[] arrPlayers = new Player[2];
 
+
         public Board(int t_rows, int t_columns, frm_Reversi t_Form) {
             this.parent_Form = t_Form;
             this.rows = t_rows;
             this.columns = t_columns;
             this.boardSize[0] = (borderWidth + squareSize) * rows;
             this.boardSize[1] = (borderWidth + squareSize) * columns;
+            this.arrPlayers[0] = new Player(Color.Blue);
+            this.arrPlayers[1] = new Player(Color.Red);
+            this.playerAtTurn = arrPlayers[0];
             IsRowsEven = (rows % 2 == 0);
             arrSquares = new Square[rows, rows];
 
@@ -121,10 +129,10 @@ namespace Reversi {
                 }
             }
 
-            arrSquares[(rows / 2) - 1, (columns / 2) - 1] = new Square(true, Color.Blue, false);
-            arrSquares[(rows / 2) - 1, (columns / 2)] = new Square(true, Color.Red, false);
-            arrSquares[(rows / 2), (columns / 2) - 1] = new Square(true, Color.Red, false);
-            arrSquares[(rows / 2), (columns / 2)] = new Square(true, Color.Blue, false);
+            //arrSquares[(rows / 2) - 1, (columns / 2) - 1] = new Square(true, Color.Blue, false);        // waarom hier geen get set structuur daan?
+            //arrSquares[(rows / 2) - 1, (columns / 2)] = new Square(true, Color.Red, false);
+            //arrSquares[(rows / 2), (columns / 2) - 1] = new Square(true, Color.Red, false);
+            //arrSquares[(rows / 2), (columns / 2)] = new Square(true, Color.Blue, false);
         }
     }
 

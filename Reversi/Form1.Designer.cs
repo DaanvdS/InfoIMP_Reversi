@@ -36,13 +36,13 @@
             // 
             // btn_NieuwSpel
             // 
-            this.btn_NieuwSpel.Location = new System.Drawing.Point(12, 12);
-            this.btn_NieuwSpel.Name = "btn_NieuwSpel";
-            this.btn_NieuwSpel.Size = new System.Drawing.Size(75, 23);
-            this.btn_NieuwSpel.TabIndex = 0;
-            this.btn_NieuwSpel.Text = "Nieuw spel";
-            this.btn_NieuwSpel.UseVisualStyleBackColor = true;
-            this.btn_NieuwSpel.Click += new System.EventHandler(this.btn_NieuwSpel_Click);
+            //this.btn_NieuwSpel.Location = new System.Drawing.Point(12, 12);
+            //this.btn_NieuwSpel.Name = "btn_NieuwSpel";
+            //this.btn_NieuwSpel.Size = new System.Drawing.Size(75, 23);
+            //this.btn_NieuwSpel.TabIndex = 0;
+            //this.btn_NieuwSpel.Text = "Nieuw spel";
+            //this.btn_NieuwSpel.UseVisualStyleBackColor = true;
+            //this.btn_NieuwSpel.Click += new System.EventHandler(this.btn_NieuwSpel_Click);
             // 
             // btn_Help
             // 
