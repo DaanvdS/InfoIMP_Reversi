@@ -51,10 +51,11 @@ namespace Reversi {
         }
 
         public void drawBoard(object sender, PaintEventArgs e) {
-            //teken bord iets met een forloop en drawSquares
-            Graphics g = e.Graphics;
-            Brush b = new SolidBrush(Color.White);
-            g.FillRectangle(b, 0, 0, revBoard.rows * (revBoard.squareSize + revBoard.borderWidth), revBoard.rows * (revBoard.squareSize + revBoard.borderWidth));
+            //Draw a rectangle with the size of the board
+            Graphics g = e.Graphics;            
+            g.FillRectangle(Brushes.White, 0, 0, revBoard.boardSize[0], revBoard.boardSize[1]);
+
+            //Draw borders and circles on the board
             for (int i = 0; i < revBoard.rows; i++) {
                 drawVerticalBorder(i, g);
                 for (int j = 0; j < revBoard.rows; j++) {
@@ -64,26 +65,23 @@ namespace Reversi {
                     }
                 }
             }
+
+            //Draw the last two borders.
             drawVerticalBorder(revBoard.rows, g);
             drawHorizontalBorder(revBoard.rows, g);
         }
 
         private void drawVerticalBorder(int i, Graphics g) {
-            Brush b = new SolidBrush(Color.Black);
-            int offsetX = i * revBoard.borderWidth;
-            g.FillRectangle(b, i * revBoard.squareSize + offsetX, 0, 2, revBoard.boardSize[0]);
+            g.FillRectangle(Brushes.Black, i * (revBoard.squareSize + revBoard.borderWidth), 0, 2, revBoard.boardSize[0]);
         }
 
         private void drawHorizontalBorder(int i, Graphics g) {
-            Brush b = new SolidBrush(Color.Black);
-            int offsetX = i * revBoard.borderWidth;
-            g.FillRectangle(b, 0, i * revBoard.squareSize + offsetX, revBoard.boardSize[1], 2);
+            g.FillRectangle(Brushes.Black, 0, i * (revBoard.squareSize + revBoard.borderWidth), revBoard.boardSize[1], 2);
         }
 
         private void drawSquare(int i, int j, Graphics g) {
             Square currSquare = revBoard.arrSquares[i, j];
             Brush b = new SolidBrush(currSquare.PieceColor);
-            //Brush b = new SolidBrush(Color.Purple);
             int offsetX = (i + 1) * revBoard.borderWidth - 1;
             int offsetY = (j + 1) * revBoard.borderWidth - 1;
             g.FillEllipse(b, revBoard.squareSize * i + offsetX, revBoard.squareSize * j + offsetY, revBoard.squareSize, revBoard.squareSize);
@@ -91,40 +89,43 @@ namespace Reversi {
     }
 
     public class Board {
-        private frm_Reversi parent_Form;
-        public int rows, columns;               //these variables are set by constructor
-        public Player playerAtTurn;             //should contain player
-        public int[] boardSize = new int[] { 0, 0 };
+        public int rows, columns;
         public int squareSize = 100;
         public int borderWidth = 4;
-        private bool GameState;          //indicates if game is running or not
-        private string Winner;          //indicates which player has won
+        public int[] boardSize = new int[] { 0, 0 };
+        
+        public Player[] arrPlayers = new Player[2];
+        public Player playerAtTurn;
+        private Player Winner;          //indicates which player has won
 
         public bool IsRowsEven;         //these variables are created in instance of class            
-        public Square[,] arrSquares;
-        public Player[] arrPlayers = new Player[2];
 
+        public Square[,] arrSquares;
+
+        private bool GameState;          //indicates if game is running or not
 
         public Board(int t_rows, int t_columns, frm_Reversi t_Form) {
-            this.parent_Form = t_Form;
+            //Calculate board dimensions
             this.rows = t_rows;
             this.columns = t_columns;
             this.boardSize[0] = (borderWidth + squareSize) * rows;
             this.boardSize[1] = (borderWidth + squareSize) * columns;
+            this.IsRowsEven = (rows % 2 == 0);
+            this.arrSquares = new Square[rows, rows];
+
+            //Initiate players
             this.arrPlayers[0] = new Player(Color.Blue, 0);
             this.arrPlayers[1] = new Player(Color.Red, 1);
             this.playerAtTurn = arrPlayers[0];
-            IsRowsEven = (rows % 2 == 0);
-            arrSquares = new Square[rows, rows];
-
-
-            for (int i = 0; i < rows; i++) {     //these nested forloops are used to initiate an empty board.
-                int x = i * squareSize;
+            
+            //Initiating the squares on the empty board
+            for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < rows; j++) {
-                    int y = j * squareSize;
                     arrSquares[i, j] = new Square(false, Color.White, false);
                 }
             }
+
+            //Starting squares.
             arrSquares[(rows / 2) - 1, (columns / 2) - 1].PieceColor = arrPlayers[0].PlayerColor;
             arrSquares[(rows / 2), (columns / 2)].PieceColor = arrPlayers[0].PlayerColor;
             arrSquares[(rows / 2) - 1, (columns / 2)].PieceColor = arrPlayers[1].PlayerColor;
@@ -145,20 +146,13 @@ namespace Reversi {
     }
 
     public class Player {
-        public Color PlayerColor;       //indicator of playercolor
-        public bool myTurn;             //indicator if this player is currently able to do a move
+        public Color PlayerColor;       //indicator of playercolor        
         public int myId;
 
         public Player(Color PlayerColor, int t_Id) {
-            this.PlayerColor = PlayerColor;
-            myTurn = false;                                 //niet gebruiken
+            this.PlayerColor = PlayerColor;            
             myId = t_Id;
-        }
-
-        public void SetIfItIsMyTurn(bool myTurn) {          //nutteloos vanwege de playeratturn van board
-            this.myTurn = myTurn;
-        }
-
+        }        
     }
 }
 
