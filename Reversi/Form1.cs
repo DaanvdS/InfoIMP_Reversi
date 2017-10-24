@@ -45,6 +45,7 @@ namespace Reversi {
             clicked_i = e.X / revBoard.squareSize; //er lijkt iets niet te kloppen qua positie e.X (een verschuiving)
             clicked_j = e.Y / revBoard.squareSize;
 
+            if
             revBoard.arrSquares[clicked_i, clicked_j].PieceColor = revBoard.playerAtTurn.PlayerColor;
 
             Invalidate();
@@ -130,15 +131,11 @@ namespace Reversi {
                     arrSquares[i, j] = new Square(false, Color.White, false);
                 }
             }
-            arrSquares[(rows / 2) - 1, (columns / 2) - 1].PieceColor = arrPlayers[0].PlayerColor;
-            arrSquares[(rows / 2), (columns / 2)].PieceColor = arrPlayers[0].PlayerColor;
-            arrSquares[(rows / 2) - 1, (columns / 2)].PieceColor = arrPlayers[1].PlayerColor;
-            arrSquares[(rows / 2), (columns / 2) - 1].PieceColor = arrPlayers[1].PlayerColor;
 
-            //arrSquares[(rows / 2) - 1, (columns / 2) - 1] = new Square(true, Color.Blue, false);        // waarom hier geen get set structuur daan?
-            //arrSquares[(rows / 2) - 1, (columns / 2)] = new Square(true, Color.Red, false);
-            //arrSquares[(rows / 2), (columns / 2) - 1] = new Square(true, Color.Red, false);
-            //arrSquares[(rows / 2), (columns / 2)] = new Square(true, Color.Blue, false);
+            arrSquares[(rows / 2) - 1, (columns / 2) - 1] = new Square(true, arrPlayers[0].PlayerColor, false);       //toch terug aangepast
+            arrSquares[(rows / 2) - 1, (columns / 2)] = new Square(true, arrPlayers[1].PlayerColor, false);
+            arrSquares[(rows / 2), (columns / 2) - 1] = new Square(true, arrPlayers[1].PlayerColor, false);
+            arrSquares[(rows / 2), (columns / 2)] = new Square(true, arrPlayers[0].PlayerColor, false);
         }
     }
 
