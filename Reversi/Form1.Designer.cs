@@ -23,7 +23,6 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.btn_NieuwSpel = new System.Windows.Forms.Button();
             this.btn_Help = new System.Windows.Forms.Button();
             this.pnl_Game = new System.Windows.Forms.Panel();
             this.nud_Rows = new System.Windows.Forms.NumericUpDown();
@@ -33,16 +32,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nud_Rows)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_Columns)).BeginInit();
             this.SuspendLayout();
-            // 
-            // btn_NieuwSpel
-            // 
-            //this.btn_NieuwSpel.Location = new System.Drawing.Point(12, 12);
-            //this.btn_NieuwSpel.Name = "btn_NieuwSpel";
-            //this.btn_NieuwSpel.Size = new System.Drawing.Size(75, 23);
-            //this.btn_NieuwSpel.TabIndex = 0;
-            //this.btn_NieuwSpel.Text = "Nieuw spel";
-            //this.btn_NieuwSpel.UseVisualStyleBackColor = true;
-            //this.btn_NieuwSpel.Click += new System.EventHandler(this.btn_NieuwSpel_Click);
             // 
             // btn_Help
             // 
@@ -116,7 +105,6 @@
             this.Controls.Add(this.nud_Rows);
             this.Controls.Add(this.pnl_Game);
             this.Controls.Add(this.btn_Help);
-            this.Controls.Add(this.btn_NieuwSpel);
             this.Name = "frm_Reversi";
             this.Text = "Reversi";
             ((System.ComponentModel.ISupportInitialize)(this.nud_Rows)).EndInit();
@@ -127,8 +115,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btn_NieuwSpel;
         private System.Windows.Forms.Button btn_Help;
         private System.Windows.Forms.Panel pnl_Game;
         private System.Windows.Forms.NumericUpDown nud_Rows;

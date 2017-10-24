@@ -34,12 +34,25 @@ namespace Reversi {
 
         private void pnl_Game_MouseClick(object sender, MouseEventArgs e) {
             int clicked_i, clicked_j;
+            if (e.X > (revBoard.columns * revBoard.squareSize) || e.X < 0) {
+                return;
+            }
+            if (e.Y > (revBoard.rows * revBoard.squareSize) || e.Y < 0) {
+                return;
+            }
 
-            clicked_i = e.X / revBoard.squareSize;
+
+            clicked_i = e.X / revBoard.squareSize; //er lijkt iets niet te kloppen qua positie e.X (een verschuiving)
             clicked_j = e.Y / revBoard.squareSize;
 
             revBoard.arrSquares[clicked_i, clicked_j].PieceColor = revBoard.playerAtTurn.PlayerColor;
+
             Invalidate();
+
+            if (revBoard.playerAtTurn == revBoard.arrPlayers[1])
+                revBoard.playerAtTurn = revBoard.arrPlayers[0];
+            else if (revBoard.playerAtTurn == revBoard.arrPlayers[0])
+                revBoard.playerAtTurn = revBoard.arrPlayers[1];
         }
 
         public void drawBoard(object sender, PaintEventArgs e) {
@@ -80,17 +93,6 @@ namespace Reversi {
             int offsetY = (j + 1) * revBoard.borderWidth - 1;
             g.FillEllipse(b, revBoard.squareSize * i + offsetX, revBoard.squareSize * j + offsetY, revBoard.squareSize, revBoard.squareSize);
         }
-
-        //private void btn_nieuwspel_click(object sender, eventargs e) {                                                //wtf is dit
-        //    if ((nud_rows.value % 2 == 0) && (nud_columns.value % 2 == 0)) {
-        //        revboard = new board((int)nud_rows.value, (int)nud_rows.value, this);
-        //        revboard.arrplayers[0] = new player(color.blue);
-        //        revboard.arrplayers[1] = new player(color.red);
-        //    }
-        //    else {
-        //        messagebox.show("hey, ho, be careful, the rows and columns in the board should be even!", "wow wow wow hey!");
-        //    }
-        //}
     }
 
     public class Board {
@@ -154,10 +156,10 @@ namespace Reversi {
 
         public Player(Color PlayerColor) {
             this.PlayerColor = PlayerColor;
-            myTurn = false;
+            myTurn = false;                                 //niet gebruiken
         }
 
-        public void SetIfItIsMyTurn(bool myTurn) {
+        public void SetIfItIsMyTurn(bool myTurn) {          //nutteloos vanwege de playeratturn van board
             this.myTurn = myTurn;
         }
 
