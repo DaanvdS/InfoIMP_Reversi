@@ -22,8 +22,6 @@ namespace Reversi {
             int Columns = 6;
 
             revBoard = new Board(Rows, Columns, this);
-            
-
 
             if (revBoard.IsRowsEven) {
                 //goedzo
@@ -44,7 +42,6 @@ namespace Reversi {
 
             clicked_i = e.X / revBoard.squareSize; //er lijkt iets niet te kloppen qua positie e.X (een verschuiving)
             clicked_j = e.Y / revBoard.squareSize;
-
 
             revBoard.arrSquares[clicked_i, clicked_j].PieceColor = revBoard.playerAtTurn.PlayerColor;
 
