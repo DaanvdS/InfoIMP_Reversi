@@ -47,10 +47,7 @@ namespace Reversi {
 
             Invalidate();
 
-            if (revBoard.playerAtTurn == revBoard.arrPlayers[1])
-                revBoard.playerAtTurn = revBoard.arrPlayers[0];
-            else if (revBoard.playerAtTurn == revBoard.arrPlayers[0])
-                revBoard.playerAtTurn = revBoard.arrPlayers[1];
+            revBoard.playerAtTurn = revBoard.arrPlayers[1 - revBoard.playerAtTurn.myId];
         }
 
         public void drawBoard(object sender, PaintEventArgs e) {
@@ -114,8 +111,8 @@ namespace Reversi {
             this.columns = t_columns;
             this.boardSize[0] = (borderWidth + squareSize) * rows;
             this.boardSize[1] = (borderWidth + squareSize) * columns;
-            this.arrPlayers[0] = new Player(Color.Blue);
-            this.arrPlayers[1] = new Player(Color.Red);
+            this.arrPlayers[0] = new Player(Color.Blue, 0);
+            this.arrPlayers[1] = new Player(Color.Red, 1);
             this.playerAtTurn = arrPlayers[0];
             IsRowsEven = (rows % 2 == 0);
             arrSquares = new Square[rows, rows];
@@ -150,10 +147,12 @@ namespace Reversi {
     public class Player {
         public Color PlayerColor;       //indicator of playercolor
         public bool myTurn;             //indicator if this player is currently able to do a move
+        public int myId;
 
-        public Player(Color PlayerColor) {
+        public Player(Color PlayerColor, int t_Id) {
             this.PlayerColor = PlayerColor;
             myTurn = false;                                 //niet gebruiken
+            myId = t_Id;
         }
 
         public void SetIfItIsMyTurn(bool myTurn) {          //nutteloos vanwege de playeratturn van board
