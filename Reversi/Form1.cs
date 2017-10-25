@@ -224,10 +224,6 @@ namespace Reversi {
 
                 }
             }
-
-
-
-            int daan = 1; //For debug
         }
 
     }
