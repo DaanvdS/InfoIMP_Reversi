@@ -43,7 +43,7 @@ namespace Reversi {
             clicked_i = e.X / revBoard.squareSize; //er lijkt iets niet te kloppen qua positie e.X (een verschuiving)
             clicked_j = e.Y / revBoard.squareSize;
 
-            revBoard.ChangeSquareColor(clicked_i, clicked_j);
+            revBoard.checkMove(clicked_i, clicked_j);
 
             Invalidate();
 
@@ -172,26 +172,53 @@ namespace Reversi {
 
         public bool checkDirection(int i, int j, int k, int l) {
             int[] directionCoeff = this.directionCoeffs[k, l];
-            if(isOpponentColor(i + directionCoeff[0], j + directionCoeff[1])) {
-                return checkDirection(i + directionCoeff[0], j + directionCoeff[1], k, l);
+            if (isOpponentColor(i + directionCoeff[0], j + directionCoeff[1])) {
+                bool done = checkDirection(i + directionCoeff[0], j + directionCoeff[1], k, l);
+                return done;
+            } else if(getPieceColorFromBoard(i + directionCoeff[0], j + directionCoeff[1]) ==Color.White) {
+                //Witte steen gevonden voordat de spelerkleur gevonden is.
+                return false;
             } else {
                 //We hebben de speler kleur weer gevonden, dus de move is goed.
                 return true;
-            }
-            
+            }            
         }
 
-        public void ChangeSquareColor(int i, int j) {
-            //Oke, we staan in i,j. Eerst gaan we kijken in direct aanliggende velden, als daar geen opponentcolor is zijn we klaar. Zowel, dan die kant registreren.
-            bool[,] directionPossible = new bool[3, 3];
+        public void changeSquareColor(int i, int j, int k, int l) {
+            int[] directionCoeff = this.directionCoeffs[k, l];
+            if (isOpponentColor(i + directionCoeff[0], j + directionCoeff[1])) {
+                this.arrSquares[i + directionCoeff[0], j + directionCoeff[1]].PieceColor = this.playerAtTurn.PlayerColor;
+                changeSquareColor(i + directionCoeff[0], j + directionCoeff[1], k, l);
+            } else {
+                //We hebben de speler kleur weer gevonden, dus de move is goed.
+            }
+        }
 
+        public void checkMove(int i, int j) {
+            //Oke, we staan in i,j. Eerst gaan we kijken in direct aanliggende velden, als daar geen opponentcolor is zijn we klaar. Zowel, dan die kant registreren.
             for (int k = 0; k < 3; k++) {
                 for (int l = 0; l < 3; l++) {
                     int[] directionCoeff = this.directionCoeffs[k, l];
                     if(isOpponentColor(i + directionCoeff[0], j + directionCoeff[1])) {
                         //Oke, er is een mogelijke richting
-                        if(checkDirection(i, j, k, l)) {
-                            this.arrSquares[i, j].PieceColor = this.playerAtTurn.PlayerColor;
+                        if(checkDirection(i + directionCoeff[0], j + directionCoeff[1], k, l)) {
+                            //Oke, het pad bevat oppontent color en eindigt met de players color.
+                            //Nu alle stenen omdraaien.
+
+                            if (isOpponentColor(i + directionCoeff[0], j + directionCoeff[1])) {
+                                this.arrSquares[i, j].PieceColor = this.playerAtTurn.PlayerColor;
+                                changeSquareColor(i, j, k, l);
+                            } else {
+                                //Er is iets echt kapot gegaan wow.
+                                MessageBox.Show("Dit kan niet fout gaan, eigenlijk.");
+                            }
+
+                            //Nu moet de forloop stoppen
+                            return;
+                        }
+                    } else {
+                        if (k == 2 && l == 2) {
+                            MessageBox.Show("No possible moves from this square. ");
                         }
                     }
 
