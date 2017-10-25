@@ -43,7 +43,7 @@ namespace Reversi {
             clicked_i = e.X / revBoard.squareSize; //er lijkt iets niet te kloppen qua positie e.X (een verschuiving)
             clicked_j = e.Y / revBoard.squareSize;
 
-            revBoard.arrSquares[clicked_i, clicked_j].PieceColor = revBoard.playerAtTurn.PlayerColor;
+            revBoard.ChangeSquareColor(clicked_i, clicked_j);
 
             Invalidate();
 
@@ -130,6 +130,47 @@ namespace Reversi {
             arrSquares[(rows / 2), (columns / 2)].PieceColor = arrPlayers[0].PlayerColor;
             arrSquares[(rows / 2) - 1, (columns / 2)].PieceColor = arrPlayers[1].PlayerColor;
             arrSquares[(rows / 2), (columns / 2) - 1].PieceColor = arrPlayers[1].PlayerColor;
+        }
+		
+		//public bool CheckMove(int i, int j) {
+        //    int c_i, c_j;
+        //    c_i = i;c_j = j;
+        //    for (int t = 0; t < (this.rows - j); t++) {
+        //        c_j++;
+        //        if ((arrSquares[c_i, c_j].PieceColor != Color.White) && (arrSquares[c_i, c_j].PieceColor != this.playerAtTurn.PlayerColor)) {
+
+        //        }
+        //    }
+        //    return false;
+        //}
+
+        //public bool CheckMove(int i, int j) { //versie 1(klopt niks van)
+        //    //this method should check the 8 directions from the square (i,j) 
+        //    //square, and check if one ends in a piece of same color as the player at turn
+        //    // The 8 directions:
+        //    //  1   2   3
+        //    //  8  i,j  4
+        //    //  7   6   5
+
+        //    bool[] dir_Possible = new bool[8];
+
+        //    dir_Possible[0] = (this.playerAtTurn.PlayerColor == arrSquares[i - 1, j - 1].PieceColor);
+        //    dir_Possible[1] = (this.playerAtTurn.PlayerColor == arrSquares[i    , j - 1].PieceColor);
+        //    dir_Possible[2] = (this.playerAtTurn.PlayerColor == arrSquares[i + 1, j - 1].PieceColor);
+        //    dir_Possible[3] = (this.playerAtTurn.PlayerColor == arrSquares[i + 1, j    ].PieceColor);
+        //    dir_Possible[4] = (this.playerAtTurn.PlayerColor == arrSquares[i + 1, j + 1].PieceColor);
+        //    dir_Possible[5] = (this.playerAtTurn.PlayerColor == arrSquares[i    , j + 1].PieceColor);
+        //    dir_Possible[6] = (this.playerAtTurn.PlayerColor == arrSquares[i - 1, j + 1].PieceColor);
+        //    dir_Possible[7] = (this.playerAtTurn.PlayerColor == arrSquares[i - 1, j    ].PieceColor);
+
+        //    for (int t = 0; t < 8; t++) {
+        //        if (dir_Possible[t] == true)
+        //            return true;
+        //    }
+        //    return false;
+        //}
+        public void ChangeSquareColor(int i, int j) {
+            this.arrSquares[i,j].PieceColor = this.playerAtTurn.PlayerColor;
         }
     }
 
