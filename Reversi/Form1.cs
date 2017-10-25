@@ -16,6 +16,7 @@ namespace Reversi {
         //En nu weer terug?
     public partial class frm_Reversi : Form {
         private Board revBoard;
+        private bool helpEnabled = false;
         public frm_Reversi() {
             InitializeComponent();
             int Rows = 6;               //values in design??!?
@@ -31,6 +32,10 @@ namespace Reversi {
         }
 
         private void pnl_Game_MouseClick(object sender, MouseEventArgs e) {
+            if (helpEnabled) {
+                helpClear();
+            }
+
             int clicked_i, clicked_j;
             if (e.X > (revBoard.columns * revBoard.squareSize) || e.X < 0) {
                 return;
@@ -42,8 +47,15 @@ namespace Reversi {
 
             clicked_i = e.X / revBoard.squareSize; //er lijkt iets niet te kloppen qua positie e.X (een verschuiving)
             clicked_j = e.Y / revBoard.squareSize;
+            if (revBoard.arrSquares[clicked_i, clicked_j].PieceColor == Color.White) {     //dit voorkomt de zetten waarbij er op een niet witte geklikt wordt!
+                revBoard.checkMove(clicked_i, clicked_j,true);
+            } else {
+                MessageBox.Show("No possible moves from this square. ");        
+            }
 
-            revBoard.checkMove(clicked_i, clicked_j);
+            if (helpEnabled) {
+                helpCalculate();
+            }
 
             Invalidate();
 
@@ -53,6 +65,11 @@ namespace Reversi {
             revBoard.CountPieces();
             lbl_AmountBlue.Text = (revBoard.AmountBlue + " Blue Pieces");
             lbl_AmountRed.Text = (revBoard.AmountRed + " Red Pieces");
+
+            if (!checkForPossibleMove()) {
+                MessageBox.Show("There are no available moves, player " + (revBoard.playerAtTurn.myId + 1) + " skips a turn.");
+                revBoard.playerAtTurn = revBoard.arrPlayers[1 - revBoard.playerAtTurn.myId];
+            }
         }
 
         public void drawBoard(object sender, PaintEventArgs e) {
@@ -86,11 +103,66 @@ namespace Reversi {
 
         private void drawSquare(int i, int j, Graphics g) {
             Square currSquare = revBoard.arrSquares[i, j];
-            Brush b = new SolidBrush(currSquare.PieceColor);
-            int offsetX = (i + 1) * revBoard.borderWidth - 1;
-            int offsetY = (j + 1) * revBoard.borderWidth - 1;
-            g.FillEllipse(b, revBoard.squareSize * i + offsetX, revBoard.squareSize * j + offsetY, revBoard.squareSize, revBoard.squareSize);
+            
+            if (currSquare.PieceColor == Color.White) {
+                if (currSquare.movePossible == true) {
+                    int diameter = revBoard.squareSize / 2;
+                    int offsetX = (i + 1) * revBoard.borderWidth - 1 + diameter / 2;
+                    int offsetY = (j + 1) * revBoard.borderWidth - 1 + diameter / 2;
+                    g.DrawEllipse(Pens.Black, revBoard.squareSize * i + offsetX, revBoard.squareSize * j + offsetY, diameter, diameter);
+                }
+            } else { 
+                Brush b = new SolidBrush(currSquare.PieceColor);
+                int diameter = revBoard.squareSize;
+                int offsetX = (i + 1) * revBoard.borderWidth - 1;
+                int offsetY = (j + 1) * revBoard.borderWidth - 1;
+                g.FillEllipse(b, revBoard.squareSize * i + offsetX, revBoard.squareSize * j + offsetY, diameter, diameter);
+            }
         }
+
+        private void btn_Help_Click(object sender, EventArgs e) {
+            if (helpEnabled) {
+                helpClear();
+                helpEnabled = false;
+            } else {
+                helpCalculate();
+                helpEnabled = true;
+            }
+        }
+
+        private bool checkForPossibleMove() {
+            helpCalculate();
+            for (int i = 0; i < revBoard.columns; i++) {
+                for (int j = 0; j < revBoard.rows; j++) {
+                    if (revBoard.arrSquares[i, j].movePossible)
+                        return true;
+                }
+            }
+            helpClear();
+            return false;
+        }
+
+        private void helpCalculate() {
+            for (int i = 0; i < revBoard.columns; i++) {
+                for (int j = 0; j < revBoard.rows; j++) {
+                    if (revBoard.arrSquares[i, j].PieceColor == Color.White)
+                        revBoard.checkMove(i, j, false);
+                }
+            }
+
+            Invalidate();
+        }
+
+        private void helpClear() {
+            for (int i = 0; i < revBoard.columns; i++) {
+                for (int j = 0; j < revBoard.rows; j++) {
+                    revBoard.arrSquares[i, j].movePossible = false;
+                }
+            }
+
+            Invalidate();
+        }
+
     }
 
     public class Board {
@@ -140,7 +212,7 @@ namespace Reversi {
             //Initiating the squares on the empty board
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < rows; j++) {
-                    arrSquares[i, j] = new Square(false, Color.White, false);
+                    arrSquares[i, j] = new Square(false, Color.White);
                 }
             }
 
@@ -150,18 +222,6 @@ namespace Reversi {
             arrSquares[(rows / 2) - 1, (columns / 2)].PieceColor = arrPlayers[1].PlayerColor;
             arrSquares[(rows / 2), (columns / 2) - 1].PieceColor = arrPlayers[1].PlayerColor;
         }
-
-        //public bool CheckMove(int i, int j) {
-        //    int c_i, c_j;
-        //    c_i = i;c_j = j;
-        //    for (int t = 0; t < (this.rows - j); t++) {
-        //        c_j++;
-        //        if ((arrSquares[c_i, c_j].PieceColor != Color.White) && (arrSquares[c_i, c_j].PieceColor != this.playerAtTurn.PlayerColor)) {
-
-        //        }
-        //    }
-        //    return false;
-        //}
 
         public Boolean isOpponentColor(int i, int j) {
             Color squareColor = getPieceColorFromBoard(i, j);
@@ -177,7 +237,7 @@ namespace Reversi {
             }
         }
 
-        public bool checkDirection(int i, int j, int k, int l) {                //checkt niet all richtingen
+        public bool checkDirection(int i, int j, int k, int l) {
             int[] directionCoeff = this.directionCoeffs[k, l];
             if (isOpponentColor(i + directionCoeff[0], j + directionCoeff[1])) {
                 bool done = checkDirection(i + directionCoeff[0], j + directionCoeff[1], k, l);
@@ -201,38 +261,55 @@ namespace Reversi {
             }
         }
 
-        public void checkMove(int i, int j) {
-            //Oke, we staan in i,j. Eerst gaan we kijken in direct aanliggende velden, als daar geen opponentcolor is zijn we klaar. Zowel, dan die kant registreren.
-            if (this.arrSquares[i,j].PieceColor != Color.White) {     //dit voorkomt de zetten waarbij er op een niet witte geklikt wordt!
-                MessageBox.Show("No possible moves from this square. ");        
-                return;
+        public void setMovePossible(int i, int j, int k, int l) {
+            int[] directionCoeff = this.directionCoeffs[k, l];
+            if (isOpponentColor(i + directionCoeff[0], j + directionCoeff[1])) {
+                this.arrSquares[i + directionCoeff[0], j + directionCoeff[1]].movePossible = true;
+                setMovePossible(i + directionCoeff[0], j + directionCoeff[1], k, l);
+            } else {
+                //We hebben de speler kleur weer gevonden, dus de move is goed.
             }
+        }
 
+        public void checkMove(int i, int j, bool changeColor) {
+            //Oke, we staan in i,j. Eerst gaan we kijken in direct aanliggende velden, als daar geen opponentcolor is zijn we klaar. Zowel, dan die kant registreren
             for (int k = 0; k < 3; k++) {
                 for (int l = 0; l < 3; l++) {
                     int[] directionCoeff = this.directionCoeffs[k, l];
                     if (isOpponentColor(i + directionCoeff[0], j + directionCoeff[1])) {
-                        MessageBox.Show("Richting " + k.ToString() + ";" + l.ToString() + " kan wel.");
+                        //MessageBox.Show("Richting " + k.ToString() + ";" + l.ToString() + " kan misschien.");
                         //Oke, er is een mogelijke richting
                         if (checkDirection(i + directionCoeff[0], j + directionCoeff[1], k, l)) {
                             //Oke, het pad bevat oppontent color en eindigt met de players color.
                             //Nu alle stenen omdraaien.
 
                             if (isOpponentColor(i + directionCoeff[0], j + directionCoeff[1])) {
-                                this.arrSquares[i, j].PieceColor = this.playerAtTurn.PlayerColor;
-                                changeSquareColor(i, j, k, l);
+                                if (changeColor) {
+                                    this.arrSquares[i, j].PieceColor = this.playerAtTurn.PlayerColor;
+                                    changeSquareColor(i, j, k, l);
+                                    checkMove(i, j, changeColor);
+                                    this.playerAtTurn = this.arrPlayers[1 - this.playerAtTurn.myId];   //moved to here from the mouseclick
+                                    return;
+                                } else {
+                                    this.arrSquares[i, j].movePossible = true;
+                                    setMovePossible(i, j, k, l);
+                                    
+                                }
+                                
+                                
                             } else {
                                 //Er is iets echt kapot gegaan wow.
                                 MessageBox.Show("Dit kan niet fout gaan, eigenlijk.");
                             }
-                            this.playerAtTurn = this.arrPlayers[1 - this.playerAtTurn.myId];   //moved to here from the mouseclick
+                            
                             //Nu moet de forloop stoppen
+
                         }
                     } else {
                         if (k == 2 && l == 2) {
                             //MessageBox.Show("No possible moves from this square. ");
                         }
-                        MessageBox.Show("Richting " + k.ToString() + ";" + l.ToString() + " kan niet.");
+                        
                     }
 
                 }
@@ -257,10 +334,10 @@ namespace Reversi {
         public Color PieceColor;        //indicator of piece color, not always neccesary (White if not necesarry)
         public bool movePossible;       //indicator if the square can be clicked as valid move (small black circle)
 
-        public Square(bool Occupied, Color PieceColor, bool movePossible) {
+        public Square(bool Occupied, Color PieceColor) {
             this.Occupied = Occupied;
             this.PieceColor = PieceColor;
-            this.movePossible = movePossible;
+            this.movePossible = false;
         }
     }
 
