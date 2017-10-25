@@ -211,9 +211,10 @@ namespace Reversi {
             for (int k = 0; k < 3; k++) {
                 for (int l = 0; l < 3; l++) {
                     int[] directionCoeff = this.directionCoeffs[k, l];
-                    if(isOpponentColor(i + directionCoeff[0], j + directionCoeff[1])) {
+                    if (isOpponentColor(i + directionCoeff[0], j + directionCoeff[1])) {
+                        MessageBox.Show("Richting " + k.ToString() + ";" + l.ToString() + " kan wel.");
                         //Oke, er is een mogelijke richting
-                        if(checkDirection(i + directionCoeff[0], j + directionCoeff[1], k, l)) {
+                        if (checkDirection(i + directionCoeff[0], j + directionCoeff[1], k, l)) {
                             //Oke, het pad bevat oppontent color en eindigt met de players color.
                             //Nu alle stenen omdraaien.
 
@@ -231,6 +232,7 @@ namespace Reversi {
                         if (k == 2 && l == 2) {
                             //MessageBox.Show("No possible moves from this square. ");
                         }
+                        MessageBox.Show("Richting " + k.ToString() + ";" + l.ToString() + " kan niet.");
                     }
 
                 }
