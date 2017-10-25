@@ -194,6 +194,13 @@ namespace Reversi {
                 revBoard = new Board((int)nud_Rows.Value, (int)nud_Columns.Value, this, pnl_Game.Size.Height, pnl_Game.Size.Width);
                 revBoard.arrPlayers[0] = new Player(Color.Blue, 0);
                 revBoard.arrPlayers[1] = new Player(Color.Red, 1);
+
+                //Labels vullen
+                lbl_PlayerAtTurn.Text = ((revBoard.playerAtTurn.myId + 1).ToString());
+                lbl_PlayerAtTurn.ForeColor = revBoard.playerAtTurn.PlayerColor;
+                revBoard.countPieces();
+                lbl_AmountBlue.Text = ("Blue: " + revBoard.AmountBlue.ToString());
+                lbl_AmountRed.Text = ("Red: " + revBoard.AmountRed.ToString());
                 if (helpEnabled) helpCalculate();
                 Invalidate();
             } else {
