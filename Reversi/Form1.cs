@@ -31,12 +31,12 @@ namespace Reversi {
                 }
 
                 //De muiscursor omrekenen naar vakjes op het bord.
-                int clicked_i = e.X / (revBoard.squareSize+revBoard.borderWidth);
+                int clicked_i = e.X / (revBoard.squareSize + revBoard.borderWidth);
                 int clicked_j = e.Y / (revBoard.squareSize + revBoard.borderWidth);
 
                 //Als de speler op een wit vakje heeft geklikt, controleren of de move valid is (checkMove wisselt de speler vanzelf om als dat gelukt is).
                 if (revBoard.arrSquares[clicked_i, clicked_j].PieceColor == Color.White) {
-                    revBoard.checkMoveIterations=0;
+                    revBoard.checkMoveIterations = 0;
                     revBoard.checkMove(clicked_i, clicked_j, true);
                 } else {
                     MessageBox.Show("No possible moves from this square. ");
@@ -79,11 +79,11 @@ namespace Reversi {
                 }
 
                 //Labels vullen
-                lbl_PlayerAtTurn.Text = ("Player " + (revBoard.playerAtTurn.myId + 1) + " at turn");
+                lbl_PlayerAtTurn.Text = ((revBoard.playerAtTurn.myId + 1).ToString());
                 lbl_PlayerAtTurn.ForeColor = revBoard.playerAtTurn.PlayerColor;
                 revBoard.countPieces();
-                lbl_AmountBlue.Text = (revBoard.AmountBlue + " Blue Pieces");
-                lbl_AmountRed.Text = (revBoard.AmountRed + " Red Pieces");
+                lbl_AmountBlue.Text = ("Blue: " + revBoard.AmountBlue.ToString());
+                lbl_AmountRed.Text = ("Red: " + revBoard.AmountRed.ToString());
             }
         }
 
@@ -149,11 +149,11 @@ namespace Reversi {
         private bool checkForPossibleMove() {
             //Kijken of de huidige speler nog beschikbare zetten heeft aan hand van de helper.
             helpCalculate();
-            bool movePossible = false; 
+            bool movePossible = false;
             for (int i = 0; i < revBoard.columns; i++) {
                 for (int j = 0; j < revBoard.rows; j++) {
                     if (revBoard.arrSquares[i, j].movePossible) {
-                        
+
                         movePossible = true;
                     }
                 }
@@ -191,7 +191,7 @@ namespace Reversi {
         private void btn_NewGame_Click(object sender, EventArgs e) {
             //Getallen uit form halen en spel initializeren
             if ((nud_Rows.Value % 2 == 0) && (nud_Columns.Value % 2 == 0)) {
-                revBoard = new Board((int)nud_Rows.Value, (int)nud_Columns.Value, this);
+                revBoard = new Board((int)nud_Rows.Value, (int)nud_Columns.Value, this, pnl_Game.Size.Height, pnl_Game.Size.Width);
                 revBoard.arrPlayers[0] = new Player(Color.Blue, 0);
                 revBoard.arrPlayers[1] = new Player(Color.Red, 1);
                 if (helpEnabled) helpCalculate();
@@ -213,14 +213,23 @@ namespace Reversi {
 
         public Player[] arrPlayers = new Player[2];
         public Player playerAtTurn;
-        public bool IsRowsEven; 
+        public bool IsRowsEven;
 
         public Square[,] arrSquares;
 
         public bool gameState = true; //true==running, false==ended
 
-        public Board(int t_rows, int t_columns, frm_Reversi t_Form) {
+        public Board(int t_rows, int t_columns, frm_Reversi t_Form, int t_height, int t_width) {
             //Calculate board dimensions
+            int squareHeight = (t_height - (1 + t_rows) * this.borderWidth) / t_rows;
+            int squareWidth = (t_width - (1+t_columns)*this.borderWidth) / t_columns;
+
+            if (squareHeight < squareWidth) {
+                this.squareSize = squareHeight;
+            } else {
+                this.squareSize = squareWidth;
+            }
+
             this.rows = t_rows;
             this.columns = t_columns;
             this.boardSize[0] = (borderWidth + squareSize) * rows;
