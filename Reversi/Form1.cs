@@ -56,7 +56,7 @@ namespace Reversi {
             g.FillRectangle(Brushes.White, 0, 0, revBoard.boardSize[0], revBoard.boardSize[1]);
 
             //Draw borders and circles on the board
-            for (int i = 0; i < revBoard.rows; i++) {
+            for (int i = 0; i < revBoard.columns; i++) {
                 drawVerticalBorder(i, g);
                 for (int j = 0; j < revBoard.rows; j++) {
                     drawSquare(i, j, g);
@@ -93,7 +93,8 @@ namespace Reversi {
         public int squareSize = 100;
         public int borderWidth = 4;
         public int[] boardSize = new int[] { 0, 0 };
-        
+        int[,][] directionCoeffs = new int[3, 3][];
+
         public Player[] arrPlayers = new Player[2];
         public Player playerAtTurn;
         private Player Winner;          //indicates which player has won
@@ -111,13 +112,24 @@ namespace Reversi {
             this.boardSize[0] = (borderWidth + squareSize) * rows;
             this.boardSize[1] = (borderWidth + squareSize) * columns;
             this.IsRowsEven = (rows % 2 == 0);
-            this.arrSquares = new Square[rows, rows];
+            this.arrSquares = new Square[columns, rows];
 
             //Initiate players
             this.arrPlayers[0] = new Player(Color.Blue, 0);
             this.arrPlayers[1] = new Player(Color.Red, 1);
             this.playerAtTurn = arrPlayers[0];
-            
+
+            //Helper array for checking validity of move
+            directionCoeffs[0, 0] = new int[] { (-1), (-1) };
+            directionCoeffs[0, 1] = new int[] { (-1), 0 };
+            directionCoeffs[0, 2] = new int[] { (-1), 1 };
+            directionCoeffs[1, 0] = new int[] { 0, (-1) };
+            directionCoeffs[1, 1] = new int[] { 0, 0 };
+            directionCoeffs[1, 2] = new int[] { 0, 1 };
+            directionCoeffs[2, 0] = new int[] { 1, (-1) };
+            directionCoeffs[2, 1] = new int[] { 1, 0 };
+            directionCoeffs[2, 2] = new int[] { 1, 1 };
+
             //Initiating the squares on the empty board
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < rows; j++) {
@@ -131,8 +143,8 @@ namespace Reversi {
             arrSquares[(rows / 2) - 1, (columns / 2)].PieceColor = arrPlayers[1].PlayerColor;
             arrSquares[(rows / 2), (columns / 2) - 1].PieceColor = arrPlayers[1].PlayerColor;
         }
-		
-		//public bool CheckMove(int i, int j) {
+
+        //public bool CheckMove(int i, int j) {
         //    int c_i, c_j;
         //    c_i = i;c_j = j;
         //    for (int t = 0; t < (this.rows - j); t++) {
@@ -144,34 +156,53 @@ namespace Reversi {
         //    return false;
         //}
 
-        //public bool CheckMove(int i, int j) { //versie 1(klopt niks van)
-        //    //this method should check the 8 directions from the square (i,j) 
-        //    //square, and check if one ends in a piece of same color as the player at turn
-        //    // The 8 directions:
-        //    //  1   2   3
-        //    //  8  i,j  4
-        //    //  7   6   5
-
-        //    bool[] dir_Possible = new bool[8];
-
-        //    dir_Possible[0] = (this.playerAtTurn.PlayerColor == arrSquares[i - 1, j - 1].PieceColor);
-        //    dir_Possible[1] = (this.playerAtTurn.PlayerColor == arrSquares[i    , j - 1].PieceColor);
-        //    dir_Possible[2] = (this.playerAtTurn.PlayerColor == arrSquares[i + 1, j - 1].PieceColor);
-        //    dir_Possible[3] = (this.playerAtTurn.PlayerColor == arrSquares[i + 1, j    ].PieceColor);
-        //    dir_Possible[4] = (this.playerAtTurn.PlayerColor == arrSquares[i + 1, j + 1].PieceColor);
-        //    dir_Possible[5] = (this.playerAtTurn.PlayerColor == arrSquares[i    , j + 1].PieceColor);
-        //    dir_Possible[6] = (this.playerAtTurn.PlayerColor == arrSquares[i - 1, j + 1].PieceColor);
-        //    dir_Possible[7] = (this.playerAtTurn.PlayerColor == arrSquares[i - 1, j    ].PieceColor);
-
-        //    for (int t = 0; t < 8; t++) {
-        //        if (dir_Possible[t] == true)
-        //            return true;
-        //    }
-        //    return false;
-        //}
-        public void ChangeSquareColor(int i, int j) {
-            this.arrSquares[i,j].PieceColor = this.playerAtTurn.PlayerColor;
+        public Boolean isOpponentColor(int i, int j) {
+            Color squareColor = getPieceColorFromBoard(i, j);
+            Color playerColor = this.playerAtTurn.PlayerColor;
+            return (squareColor != playerColor) && (squareColor != Color.White);
         }
+
+        public Color getPieceColorFromBoard(int i, int j) {
+            if ((!(i < 0 || i >= columns)) && (!(j < 0 || j >= rows))) {
+                return arrSquares[i, j].PieceColor;
+            } else {
+                return Color.White;
+            }
+        }
+
+        public bool checkDirection(int i, int j, int k, int l) {
+            int[] directionCoeff = this.directionCoeffs[k, l];
+            if(isOpponentColor(i + directionCoeff[0], j + directionCoeff[1])) {
+                return checkDirection(i + directionCoeff[0], j + directionCoeff[1], k, l);
+            } else {
+                //We hebben de speler kleur weer gevonden, dus de move is goed.
+                return true;
+            }
+            
+        }
+
+        public void ChangeSquareColor(int i, int j) {
+            //Oke, we staan in i,j. Eerst gaan we kijken in direct aanliggende velden, als daar geen opponentcolor is zijn we klaar. Zowel, dan die kant registreren.
+            bool[,] directionPossible = new bool[3, 3];
+
+            for (int k = 0; k < 3; k++) {
+                for (int l = 0; l < 3; l++) {
+                    int[] directionCoeff = this.directionCoeffs[k, l];
+                    if(isOpponentColor(i + directionCoeff[0], j + directionCoeff[1])) {
+                        //Oke, er is een mogelijke richting
+                        if(checkDirection(i, j, k, l)) {
+                            this.arrSquares[i, j].PieceColor = this.playerAtTurn.PlayerColor;
+                        }
+                    }
+
+                }
+            }
+
+
+
+            int daan = 1; //For debug
+        }
+
     }
 
     public class Square {
